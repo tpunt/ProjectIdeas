@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Project Ideas - Home</title>
+        <h:outputScript name="js/global.js" />
+        <h:outputStylesheet name="css/global.css" />
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/includes/header.xhtml" />
+        <article id="content">
+            <header>
+                <h:form id="filter">
+                    <h:outputLabel value="Search"/>
+                    <h:inputText id="title" p:autocomplete="off" p:placeholder="Project name...">
+                        <f:ajax event="keyup" listener="#{ProjectFilterHandler.loadProjects}" render="projects" />
+                    </h:inputText>
+                    <h:inputText id="owner" p:autocomplete="off" p:placeholder="Owner name...">
+                        <f:ajax event="keyup" listener="#{ProjectFilterHandler.loadProjects}" render="projects" />
+                    </h:inputText>
+                    <h:selectOneMenu id="status">
+                        <f:selectItem itemValue="" itemLabel="Any Status"/>
+                        <f:selectItem itemValue="A" />
+                        <f:selectItem itemValue="S" />
+                        <f:ajax event="change" listener="#{ProjectFilterHandler.loadProjects}" render="projects" />
+                    </h:selectOneMenu>
+                </h:form>
+            </header>
+            <c:if test="#{projectHandler.error != ''}">
+                <span class="error">#{projectHandler.error}</span>
+            </c:if>
+            <section class="results" id="results">
+                <h:panelGroup id="projects">
+                    <h:form>
+                        <h:dataTable value="#{ProjectFilterHandler.projects}" var="project">
+                            <h:column>
+                                <f:facet name="header">#</f:facet>
+                                <h:outputText value="#{project.id}" p:data-id="#{project.id}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Project Idea</f:facet>
+                                <h:commandLink value="#{project.title}" action="#{projectHandler.viewAction}">
+                                    <f:param name="id" value="#{project.id}" />
+                                </h:commandLink>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Idea Owner</f:facet>
+                                <h:outputText value="#{project.user.username}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Last Updated</f:facet>
+                                <h:outputText value="#{project.lastUpdated}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Status</f:facet>
+                                <h:outputText value="#{project.status}" />
+                            </h:column>
+                        </h:dataTable>
+                    </h:form>
+                </h:panelGroup>
+            </section>
+        </article>
+    </h:body>
+</html>

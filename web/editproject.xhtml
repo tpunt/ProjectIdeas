@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:viewParam name="id" value="#{projectHandler.project.id}" />
+        <f:viewAction action="#{projectHandler.loadProject}" onPostback="true" />
+    </f:metadata>
+    <h:head>
+        <title>Editing » #{projectHandler.project.title}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="css/global.css" />
+        <style>
+            #content > header > h2 {
+                display: inline;
+            }
+            #content header a {
+                padding: 0.1em;
+                margin: 0 0.3em;
+            }
+            #content > header > form > a {
+                display: inline;
+                float: right;
+            }
+            .project {
+                background-color: #999999;
+            }
+            .project > table > tr > th {
+                width: 10em;
+            }
+            #content header a.saveCreateButton {
+                background-color: rgb(20,200,20);
+                color: #fff;
+                padding: 22px ;
+                margin: -10px 10px;
+            }
+            .deleteProject {
+                background-color: rgb(200,20,20);
+            }
+            .error {
+                color: #f00;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/includes/header.xhtml" />
+        <article id="content">
+            <header>
+                <h:form>
+                    <h:commandLink value="Withdraw" p:class="deleteProject" action="#{projectHandler.doDeleteProject}">
+                        <f:param name="id" value="#{projectHandler.project.id}" />
+                    </h:commandLink>
+                </h:form>
+                <h:link value="Projects" outcome="/index" /> » #{projectHandler.project.title} (Editing)
+            </header>
+            <div class="clearStyles"></div>
+            <c:if test="#{projectHandler.error != ''}">
+                <span class="error">#{projectHandler.error}</span>
+            </c:if>
+            <section class="project">
+                <h:form id="editproject">
+                    <table>
+                        <tr>
+                            <td>ID</td>
+                            <td>#{projectHandler.project.id}</td>
+                        </tr>
+                        <tr>
+                            <td>Title</td>
+                            <td>
+                                <input name="editproject:title" value="#{projectHandler.getProject().getTitle()}" />
+                                <c:if test="#{projectHandler.titleError != ''}">
+                                    <span class="error">#{projectHandler.titleError}</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Aims and Objectives</td>
+                            <td>
+                                <input name="editproject:aimsAndObjectives" value="#{projectHandler.project.aimsAndObjectives}" />
+                                <c:if test="#{projectHandler.aimsAndObjectivesError != ''}">
+                                    <span class="error">#{projectHandler.aimsAndObjectivesError}</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Open Questions</td>
+                            <td>
+                                <input name="editproject:openQuestions" value="#{projectHandler.project.openQuestions}" />
+                                <c:if test="#{projectHandler.openQuestionsError != ''}">
+                                    <span class="error">#{projectHandler.openQuestionsError}</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Deliverables</td>
+                            <td>
+                                <input name="editproject:deliverables" value="#{projectHandler.project.deliverables}" />
+                                <c:if test="#{projectHandler.deliverablesError != ''}">
+                                    <span class="error">#{projectHandler.deliverablesError}</span>
+                                </c:if>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Idea Creator</td>
+                            <td>#{projectHandler.project.user.username}</td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="#{userHandler.isAdmin()}">
+                                        <h:selectOneMenu id="status" value="#{projectHandler.project.status}">
+                                            <f:selectItem itemValue="A" />
+                                            <f:selectItem itemValue="S" />
+                                        </h:selectOneMenu>
+                                        <c:if test="#{projectHandler.statusError != ''}">
+                                            <span class="error">#{projectHandler.statusError}</span>
+                                        </c:if>
+                                    </c:when>
+                                    <c:otherwise>
+                                        #{projectHandler.project.status}
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Updated</td>
+                            <td>#{projectHandler.project.lastUpdated}</td>
+                        </tr>
+                    </table>
+                    <h:commandButton value="Update" action="#{projectHandler.doUpdateProject()}">
+                        <f:param name="id" value="#{projectHandler.project.id}" />
+                    </h:commandButton>
+                </h:form>
+            </section>
+        </article>
+    </h:body>
+</html>

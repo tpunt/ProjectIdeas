@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <f:metadata>
+        <f:viewParam name="id" value="#{projectHandler.project.id}" />
+        <f:viewAction action="#{projectHandler.loadProject}" onPostback="true" />
+    </f:metadata>
+    <h:head>
+        <title>#{projectHandler.project.title}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <h:outputStylesheet name="css/global.css" />
+        <style>
+            #content > header > h2 {
+                display: inline;
+            }
+            #content header a {
+                padding: 0.1em;
+                margin: 0 0.3em;
+            }
+            #content > header > form > a {
+                display: inline;
+                float: right;
+            }
+            .project {
+                background-color: #999999;
+            }
+            .project > table > tr > th {
+                width: 10em;
+            }
+            #content header a.saveCreateButton {
+                background-color: rgb(20,200,20);
+                color: #fff;
+                padding: 22px ;
+                margin: -10px 10px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <ui:include src="/WEB-INF/includes/header.xhtml" />
+        <article id="content">
+            <header>
+                <h:form>
+                    <h:commandLink value="Edit" action="#{projectHandler.editAction()}">
+                        <f:param name="id" value="#{projectHandler.project.id}" />
+                    </h:commandLink>
+                </h:form>
+                <h:link value="Projects" outcome="index" /> » #{projectHandler.project.title}
+            </header>
+            <div class="clearStyles"></div>
+            <c:if test="#{projectHandler.error != ''}">
+                <span class="error">#{projectHandler.error}</span>
+            </c:if>
+            <section class="project">
+                <table>
+                    <tr>
+                        <td>ID</td>
+                        <td>#{projectHandler.project.id}</td>
+                    </tr>
+                    <tr>
+                        <td>Title</td>
+                        <td>#{projectHandler.project.title}</td>
+                    </tr>
+                    <tr>
+                        <td>Aims and Objectives</td>
+                        <td>#{projectHandler.project.aimsAndObjectives}</td>
+                    </tr>
+                    <tr>
+                        <td>Open Questions</td>
+                        <td>#{projectHandler.project.openQuestions}</td>
+                    </tr>
+                    <tr>
+                        <td>Deliverables</td>
+                        <td>#{projectHandler.project.deliverables}</td>
+                    </tr>
+                    <tr>
+                        <td>Idea Creator</td>
+                        <td>#{projectHandler.project.user.username}</td>
+                    </tr>
+                    <tr>
+                        <td>Status</td>
+                        <td>#{projectHandler.project.status}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Updated</td>
+                        <td>#{projectHandler.project.lastUpdated}</td>
+                    </tr>
+                </table>
+            </section>
+        </article>
+    </h:body>
+</html>
