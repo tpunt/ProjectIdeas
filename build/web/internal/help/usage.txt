@@ -1,0 +1,15 @@
+Not logged in users
+
+These may filter projects via the search bar on the index page, and view projects by clicking the project name.
+They may also register using the Register button or login in the top right of the page.
+
+Logged in users
+
+These may create new projects via the "New Project Idea +" button.
+They may also edit their own project ideas by navigating onto the project and clicking the "Edit" button on the right of the page. When in edit mode, they can apply changes by clicking the "Update" button on the bottom left of the form.
+Logged in users may also withdraw (i.e. delete projects) by firstly editing the project, and then clicking the "Withdraw" button, which should be in the same place as the just-clicked "edit" button.
+Finally, users may logout using the "Logout" button found in the top-right of the page.
+
+Privileged logged in users
+
+Admins have a privilege level of "1" in the database, and have the further abilities of editing and deleteing any projects, as well as being able to set the project status upon creating/editing projects.
